@@ -29,11 +29,16 @@
           // Show the loading indicator again after a short delay
           setTimeout(() => {
             document.getElementById("loading").style.display = "block";
-          }, 500); 
+          }, 500);
         }
 
         // Listen for messages from the server
         eventSource.onmessage = addTime;
+
+        // Handle errors
+        eventSource.onerror = function (error) {
+          console.error("EventSource failed:", error);
+        };
       };
     </script>
   </body>
