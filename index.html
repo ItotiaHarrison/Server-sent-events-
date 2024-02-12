@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server-sent event</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <h1>Time Update</h1>
+    <div id="loading">Loading...</div>
+    <ul id="times"></ul>
+
+    <script>
+      window.onload = function () {
+        // Create a new EventSource that connects to the server
+        const eventSource = new EventSource("http://localhost:3000/events");
+
+        // Function to handle incoming events
+        function addTime(event) {
+          // Hide the loading indicator when data is received
+          document.getElementById("loading").style.display = "none";
+
+          // Add the event data to the list
+          var newElement = document.createElement("li");
+          newElement.textContent = "The time is: " + event.data;
+          document.getElementById("times").appendChild(newElement);
+
+          // Show the loading indicator again after a short delay
+          setTimeout(() => {
+            document.getElementById("loading").style.display = "block";
+          }, 500); 
+        }
+
+        // Listen for messages from the server
+        eventSource.onmessage = addTime;
+      };
+    </script>
+  </body>
+</html>
