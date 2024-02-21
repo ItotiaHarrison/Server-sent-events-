@@ -14,8 +14,9 @@ const server = http.createServer((req, res) => {
     // Send an event every 5 seconds
     const intervalId = setInterval(() => {
       const date = new Date();
-      res.write(`data: ${date.toISOString()}\n\n`);
-    }, 2000);
+      const timeString = date.toLocaleTimeString('en-US', { hour12: true });
+      res.write(`retry: 5000\ndata: ${timeString}\n\n`);
+    }, 5000);
 
     // Clear interval on client disconnection
     req.on('close', () => {
